@@ -14,12 +14,10 @@ const CartProvider = ({children}) => {
     const purchase = (item) => {
         const target = items.find((i) => i.id == item.id);
         if(target !== undefined){
-            console.log("Ese artículo ya está")
-            console.log("Ahora tienes:" + target.comprado)
             target.comprado = target.comprado + 1
+            setItems(items => [...itemsgit])
         }
         else{
-            console.log("Este artículo no está")
             setItems(items => [...items, item])
         }
     }
@@ -51,8 +49,6 @@ const CartProvider = ({children}) => {
         empty:empty,
         borrar:borrar
     }
-
-
 
     return (
         <CartContext.Provider value={cart}>

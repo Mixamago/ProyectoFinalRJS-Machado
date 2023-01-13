@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { QuickCart } from "./context/CartContext";
 
 const NavBar = () => {
-    const cartList = QuickCart()
-    const cartCount = () => {
-
+    const {items} = QuickCart()
+    const [cantidad, setCantidad] = useState(0)
+    const cartCount = (total, amount) => {
+        return total + amount.comprado
     }
-    const cartAmount = cartList.length
+    useEffect(() => {
+        if(items.length !== 0){
+            const suma = items.reduce(cartCount, 0)
+            setCantidad(suma)
+        }
+        else{
+            setCantidad(0)
+        }
+    }, [items])
+    
 
     return (
     <div className="navbar bg-brown flex justify-between">
@@ -38,12 +48,12 @@ const NavBar = () => {
                 <label tabIndex="0" className="btn btn-ghost btn-circle">
                     <div className="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                        <span className="badge badge-sm indicator-item">{cartAmount !== undefined ? cartAmount : 0}</span>
+                        <span className="badge badge-sm indicator-item">{cantidad !== undefined ? cantidad : 0}</span>
                     </div>
                 </label>
                 <div tabIndex="0" className=" text-center mt-3 card card-compact dropdown-content w-52 bg-ivory shadow border-2 border-brown">
                     <div className="card-body">
-                        <span className="font-bold text-lg text-black">{cartAmount !== undefined ? cartAmount : 0} artículos</span>
+                        <span className="font-bold text-lg text-black">{cantidad !== undefined ? cantidad : 0} artículos</span>
                         <div className="card-actions">
                             <button className="btn btn-block bg-brown text-white border-2 border-brown hover:bg-gold hover:text-brown"><Link to="/carrito">Ver carrito</Link></button>
                         </div>
